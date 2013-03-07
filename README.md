@@ -7,7 +7,9 @@ It's intent was to mask a user's identity so their account could be displayed du
 
 After an interactive dialog via the console, it creates UserChanger.sql in the root of the C:\ directory.
 
-After running the SQL script, all 
+After running the SQL script, all user data is hidden.
+
+The USERNAME is set to the first and last name that you enter and the PASSWORD is set to Password1.
 
 This program nor its developers are in any way affiliated with Abra, Sage, SageHRMS or Employee Self Service.
 
