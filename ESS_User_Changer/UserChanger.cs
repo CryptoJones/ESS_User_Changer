@@ -16,7 +16,6 @@ namespace ESS_User_Changer
             Console.Out.NewLine = ""; // Tells NewLine to insert a carriage return
             string path = @"C:\UserChanger.sql"; // Change this to where you want your file
 
-
             if (File.Exists(path)) // Checks to see if File exists
             {
                 File.Delete(path); // Deletes file if it exists
@@ -27,10 +26,6 @@ namespace ESS_User_Changer
             //Have user enter old data
             Console.WriteLine("Enter the old Employee Number: ");
             string old_emp_no = Console.ReadLine();
-            Console.WriteLine("Enter the old Employee First Name: ");
-            string old_fname = Console.ReadLine();
-            Console.WriteLine("Enter the old Employee Last Name: ");
-            string old_lname = Console.ReadLine();
             Console.WriteLine("Enter the old Employee Company Code: ");
             string old_co_code = Console.ReadLine();
             
@@ -59,10 +54,13 @@ namespace ESS_User_Changer
             // updates dbo.hemerg
             builderOutput.Append("UPDATE dbo.hemerg");
             builderOutput.AppendLine();
-            builderOutput.Append("SET ");
+            builderOutput.Append("SET");
+            builderOutput.AppendLine();
             builderOutput.Append("e_empno = '");
             builderOutput.Append(new_emp_no);
-            builderOutput.Append("'");
+            builderOutput.Append("', e_2addr1 = '', e_2addr2 = '', e_2addr3 = '', e_2contact = '', e_2cphone = '', e_2hphone = '', e_2relat = '',");
+            builderOutput.Append(" e_2wphone = '', e_addr1 = '', e_addr2 = '', e_addr3 = '', e_contact = '', e_cphone = '', e_hphone = '', e_relat = '', e_wphone = ''");
+            builderOutput.AppendLine();
             builderOutput.Append("WHERE ");
             builderOutput.AppendLine();
             builderOutput.Append("e_empno = '");
@@ -159,7 +157,6 @@ namespace ESS_User_Changer
             builderOutput.Append("SET empno = '");
             builderOutput.Append(new_emp_no);
             builderOutput.Append("'");
-            builderOutput.AppendLine();
             builderOutput.Append("WHERE 	empno = '");
             builderOutput.Append(old_emp_no);
             builderOutput.Append("'");
@@ -200,6 +197,20 @@ namespace ESS_User_Changer
             builderOutput.Append("GO");
             builderOutput.AppendLine();
             builderOutput.AppendLine();
+            // Updates dbo.tUSERS (UserName)
+            builderOutput.Append("UPDATE dbo.tUSERS");
+            builderOutput.AppendLine();
+            builderOutput.Append("SET UserName = '");
+            builderOutput.Append(new_fname);
+            builderOutput.Append(new_lname);
+            builderOutput.Append("', UserPassword = 'owoSsMfoXjtf2oq1jjtSlg=='");
+            builderOutput.AppendLine();
+            builderOutput.Append("WHERE UserName = (SELECT UserName FROM tUsers WHERE left(UserAbraSuiteLogicalPrimaryKey, 4) = '");
+            builderOutput.Append(old_emp_no);
+            builderOutput.Append("')");
+            builderOutput.AppendLine();
+            builderOutput.Append("GO");
+            builderOutput.AppendLine();
             // Updates dbo.tUSERS (UserAbraSuiteLogicalPrimaryKey)
             builderOutput.Append("UPDATE dbo.tUSERS");
             builderOutput.AppendLine();
@@ -218,6 +229,8 @@ namespace ESS_User_Changer
             builderOutput.Append("GO");
             builderOutput.AppendLine();
             builderOutput.AppendLine();
+        
+
             string output = builderOutput.ToString(); // Convert String builder to string
             System.IO.File.AppendAllText(path, output); // Sends string to file
         }
